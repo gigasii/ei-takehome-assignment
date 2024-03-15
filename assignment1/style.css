@@ -48,8 +48,15 @@ body, html {
     align-items: center;
 }
 
-.search-bar img, h4 {
+.search-bar img {
     opacity: 0.15;
+}
+
+.search-bar input {
+    border: 0px none;
+    color: #c8c4c4;
+    height: 30px;
+    font-size: 20px;
 }
 
 .board {
