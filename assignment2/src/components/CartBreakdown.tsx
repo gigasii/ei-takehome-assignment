@@ -12,31 +12,41 @@ import {
   Text,
   Image,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import { CartContext } from "../store/context";
 
 export function CartBreakdown() {
-  const [totalCost, setTotalCost] = useState(0);
+  const { cartItems, setCartItems } = useContext(CartContext);
 
-  const calculateTotal = () => {
-    let cost = 0;
-    products.map((product) => {
-      cost += product.price * product.quantity;
+  const totalCost = Object.entries(cartItems).reduce((acc, curr) => {
+    const [_, otherFields] = curr;
+    return acc + otherFields.quantity * otherFields.price;
+  }, 0);
+
+  const ammendQuantity = (productId: number, isAdd: boolean) => {
+    const quantityChangeAmount = isAdd ? 1 : -1;
+
+    setCartItems((previousCartItems) => {
+      const isQuantityZero =
+        previousCartItems[productId].quantity + quantityChangeAmount === 0;
+
+      // If quanity is zero, remove product
+      if (isQuantityZero) {
+        const { [productId]: id, ...restOfTheProducts } = previousCartItems;
+        return restOfTheProducts;
+      }
+
+      return {
+        ...previousCartItems,
+        [productId]: {
+          ...previousCartItems[productId],
+          quantity:
+            previousCartItems[productId].quantity + quantityChangeAmount,
+        },
+      };
     });
-    setTotalCost(cost);
   };
-
-  const plusQuantity = (itemId: number) => {
-    console.log(`plus clicked on item: ${itemId}`);
-  };
-
-  const minusQuantity = (itemId: number) => {
-    console.log(`minus clicked on item: ${itemId}`);
-  };
-
-  useEffect(() => {
-    calculateTotal();
-  }, []);
 
   return (
     <TableContainer>
@@ -47,65 +57,54 @@ export function CartBreakdown() {
         <Thead>
           <Tr>
             <Th width="fit-content">Name of product</Th>
+            <Th>Price</Th>
             <Th>Quantity</Th>
             <Th>Adjust quantity </Th>
           </Tr>
         </Thead>
         <Tbody>
-          {products.map((product) => (
-            <Tr>
-              <Td>
-                <Stack direction="row" alignItems="center" spacing={3}>
-                  <Image
-                    src={product.image}
-                    alt={product.image}
-                    boxSize="50px"
-                  />
-                  <Text>{product.title}</Text>
-                </Stack>
-              </Td>
-              <Td>{product.quantity}</Td>
-              <Td>
-                <Stack direction="row" spacing={3}>
-                  <IconButton
-                    icon={<FaPlus />}
-                    variant="outline"
-                    colorScheme="teal"
-                    aria-label="plus"
-                    fontSize="20px"
-                    onClick={() => plusQuantity(product.id)}
-                  />
-                  <IconButton
-                    icon={<FaMinus />}
-                    variant="outline"
-                    colorScheme="teal"
-                    aria-label="minus"
-                    fontSize="20px"
-                    onClick={() => minusQuantity(product.id)}
-                  />
-                </Stack>
-              </Td>
-            </Tr>
-          ))}
+          {Object.entries(cartItems).map(([productId, productFields]) =>
+            productFields.quantity !== 0 ? (
+              <Tr>
+                <Td>
+                  <Stack direction="row" alignItems="center" spacing={3}>
+                    <Image
+                      src={productFields.image}
+                      alt={productFields.image}
+                      boxSize="50px"
+                    />
+                    <Text>{productFields.title}</Text>
+                  </Stack>
+                </Td>
+                <Td>$ {productFields.price}</Td>
+                <Td>{productFields.quantity}</Td>
+                <Td>
+                  <Stack direction="row" spacing={3}>
+                    <IconButton
+                      icon={<FaPlus />}
+                      variant="outline"
+                      colorScheme="teal"
+                      aria-label="plus"
+                      fontSize="20px"
+                      onClick={() => ammendQuantity(Number(productId), true)}
+                    />
+                    <IconButton
+                      icon={<FaMinus />}
+                      variant="outline"
+                      colorScheme="teal"
+                      aria-label="minus"
+                      fontSize="20px"
+                      onClick={() => ammendQuantity(Number(productId), false)}
+                    />
+                  </Stack>
+                </Td>
+              </Tr>
+            ) : (
+              <></>
+            )
+          )}
         </Tbody>
       </Table>
     </TableContainer>
   );
 }
-
-const products = [
-  {
-    id: 1,
-    image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-    title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-    price: 100,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    image: "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
-    title: "Mens Cotton Jacket",
-    price: 22.3,
-    quantity: 3,
-  },
-];

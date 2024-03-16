@@ -10,12 +10,3 @@ export type ProductItem = {
     count: number;
   };
 };
-
-export type CartItem = {
-  id: number;
-  image: string;
-  title: string;
-
-  price: number;
-  quantity: number;
-};
