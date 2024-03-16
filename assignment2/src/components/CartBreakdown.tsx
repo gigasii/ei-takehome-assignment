@@ -20,8 +20,8 @@ export function CartBreakdown() {
 
   const calculateTotal = () => {
     let cost = 0;
-    items.map((item) => {
-      cost += item.price * item.quantity;
+    products.map((product) => {
+      cost += product.price * product.quantity;
     });
     setTotalCost(cost);
   };
@@ -52,15 +52,19 @@ export function CartBreakdown() {
           </Tr>
         </Thead>
         <Tbody>
-          {items.map((item) => (
+          {products.map((product) => (
             <Tr>
               <Td>
                 <Stack direction="row" alignItems="center" spacing={3}>
-                  <Image src={item.image} alt={item.image} boxSize="50px" />
-                  <Text>{item.title}</Text>
+                  <Image
+                    src={product.image}
+                    alt={product.image}
+                    boxSize="50px"
+                  />
+                  <Text>{product.title}</Text>
                 </Stack>
               </Td>
-              <Td>{item.quantity}</Td>
+              <Td>{product.quantity}</Td>
               <Td>
                 <Stack direction="row" spacing={3}>
                   <IconButton
@@ -69,7 +73,7 @@ export function CartBreakdown() {
                     colorScheme="teal"
                     aria-label="plus"
                     fontSize="20px"
-                    onClick={() => plusQuantity(item.id)}
+                    onClick={() => plusQuantity(product.id)}
                   />
                   <IconButton
                     icon={<FaMinus />}
@@ -77,7 +81,7 @@ export function CartBreakdown() {
                     colorScheme="teal"
                     aria-label="minus"
                     fontSize="20px"
-                    onClick={() => minusQuantity(item.id)}
+                    onClick={() => minusQuantity(product.id)}
                   />
                 </Stack>
               </Td>
@@ -89,7 +93,7 @@ export function CartBreakdown() {
   );
 }
 
-const items = [
+const products = [
   {
     id: 1,
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",

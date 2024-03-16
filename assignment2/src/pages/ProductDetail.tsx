@@ -6,18 +6,48 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
+import { useSearchParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { ProductItem } from "../types/product";
+import { GET_PRODUCT_KEY, getProduct } from "../queries/product";
+import { PageLoadingSpinner } from "../components/Spinner";
+import { useState } from "react";
 
 export function ProductDetailPage() {
   const toast = useToast();
+  const [searchParams] = useSearchParams();
+  const productId = searchParams.get("productId");
+
+  const [product, setProduct] = useState<ProductItem | undefined>(undefined);
+
+  const { status } = useQuery<ProductItem>(
+    [GET_PRODUCT_KEY],
+    async () => getProduct(Number(productId)),
+    {
+      enabled: !!productId,
+      onSuccess: (data) => setProduct(data),
+    }
+  );
+
+  console.log(status);
+
   const addToCartHandler = () => {
     toast({
       title: "Added to cart",
       description: "Item has been added to cart successfully",
       status: "success",
-      duration: 2000,
+      duration: 1000,
       isClosable: true,
     });
   };
+
+  if (status === "error" || status === "idle") {
+    return <Text>Error, please try again later</Text>;
+  }
+
+  if (!product) {
+    return <PageLoadingSpinner />;
+  }
 
   return (
     <Stack
@@ -51,17 +81,3 @@ export function ProductDetailPage() {
     </Stack>
   );
 }
-
-const product = {
-  id: 1,
-  title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-  price: 109.95,
-  description:
-    "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-  category: "men's clothing",
-  image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-  rating: {
-    rate: 3.9,
-    count: 120,
-  },
-};

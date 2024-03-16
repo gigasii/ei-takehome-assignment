@@ -8,14 +8,22 @@ import {
   StackDivider,
   Box,
   Image,
+  Button,
 } from "@chakra-ui/react";
 import { ProductItem } from "../types/product";
+import { useNavigate } from "react-router-dom";
 
 type ProductCardProps = {
   product: ProductItem;
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const naviate = useNavigate();
+
+  const seeDetailsHandler = (productId: number) => {
+    naviate(`/product-details?productId=${productId}`);
+  };
+
   return (
     <Card direction="row">
       <CardHeader width="300px">
@@ -29,6 +37,13 @@ export function ProductCard({ product }: ProductCardProps) {
           ))}
         </Stack>
         <Text>Reviewd by {product.rating.count} people</Text>
+        <Button
+          colorScheme="blue"
+          mt={5}
+          onClick={() => seeDetailsHandler(product.id)}
+        >
+          See details
+        </Button>
       </CardHeader>
       <CardBody>
         <Stack divider={<StackDivider />} spacing={4}>
