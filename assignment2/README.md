@@ -1,46 +1,34 @@
-# Getting Started with Create React App
+# Technical decisions and assumptions
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Assume that this cart checkout is a small project which doesnt require added functionality in the future at the moment. Libraries choosen picked for simply to complete the tasks at hand.
 
-## Available Scripts
+- chakra-ui/react: Light-weight UI library goes with suitable components out of the box to help design the frontend compared to libraries such as material UI which is a heavier library that the other components not needed
 
-In the project directory, you can run:
+- react-icons: Help to render icons required by the frontend
 
-### `npm start`
+- react-query: Use to manage the call state to determine the operation of APIs called
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- state-management: Used React's build in context API to maange global state as compared to a library like Redux to manage state as we simply need to manage the cart for the time being which context API is more suited for smaller states
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# How to navigate the app
 
-### `npm test`
+Home page is the list of all products
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Click on the home icon in header - Go back to home
+- Click on the cart icon in header - Go to cart
+- Click on 'see details' - Go to product details
 
-### `npm run build`
+## How to build and run the code
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. npm install
+2. npm start
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How to run the tests
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. npm test
 
-### `npm run eject`
+# Bonus
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [✔️] Write meaningful test cases only on cart page using jest and react-testing-library.
+- [✔️] Persist data of shopping cart even when browser is closed and reopen.
+- [x] Beautify the UI using tailwindcss framework
