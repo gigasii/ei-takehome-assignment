@@ -65,7 +65,7 @@ export function CartBreakdown() {
         <Tbody>
           {Object.entries(cartItems).map(([productId, productFields]) =>
             productFields.quantity !== 0 ? (
-              <Tr>
+              <Tr key={productId}>
                 <Td>
                   <Stack direction="row" alignItems="center" spacing={3}>
                     <Image
