@@ -6,6 +6,8 @@ type CartContextType = {
   setCartItems: Dispatch<SetStateAction<Record<number, CartItem>>>;
 };
 
+export const CART_ITEM_STORAGE_KEY = "cart";
+
 export const CartContext = createContext<CartContextType>(
   {} as CartContextType
 );

@@ -4,13 +4,18 @@ import { NotFoundPage } from "./pages/NotFound";
 import { ProductsPage } from "./pages/Products";
 import { ProductDetailPage } from "./pages/ProductDetail";
 import { CartPage } from "./pages/CartPage";
-import { useState } from "react";
-import { CartContext } from "./store/context";
+import { useState, useEffect } from "react";
+import { CART_ITEM_STORAGE_KEY, CartContext } from "./store/context";
 import { CartItem } from "./types/store";
 
 function App() {
   // Global state
-  const [cartItems, setCartItems] = useState<Record<number, CartItem>>({});
+  const [cartItems, setCartItems] = useState<Record<number, CartItem>>(
+    JSON.parse(localStorage.getItem(CART_ITEM_STORAGE_KEY) ?? "{}")
+  );
+  useEffect(() => {
+    localStorage.setItem(CART_ITEM_STORAGE_KEY, JSON.stringify(cartItems));
+  }, [cartItems]);
 
   return (
     <BrowserRouter>
